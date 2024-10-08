@@ -1,7 +1,11 @@
 import newspaper
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import traceback
+import nltk
 
+# Download the required NLTK data
+nltk.download('punkt')
 
 app = Flask(__name__)
 CORS(app)
@@ -30,8 +34,10 @@ def summarize_article():
             'summary': summary
         })
 
+    except newspaper.ArticleException as e:
+        return jsonify({'error': 'Failed to process article', 'details': str(e)}), 500
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': 'An unexpected error occurred', 'details': str(e), 'traceback': traceback.format_exc()}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
