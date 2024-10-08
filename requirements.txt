@@ -1,3 +1,4 @@
 Flask
 newspaper3k
 flask-cors
+lxml_html_clean
